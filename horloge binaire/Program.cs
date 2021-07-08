@@ -9,40 +9,25 @@ namespace horloge_binaire
     {
         static void Main(string[] args)
         {
-
-            List<String> pause = ReadFile();
-
-            Heure(pause);
-
-
-            /* CancellationTokenSource cts = new CancellationTokenSource();
-
-              ThreadPool.QueueUserWorkItem(new WaitCallback(TetrisMusic), cts.Token);
+             String modelHorloge;
+             List<String> pause = ReadFile(out modelHorloge);
+            Heure(pause, modelHorloge);
 
 
-              // // Request cancellation.
-              cts.Cancel();
-              // Console.WriteLine("Fin du thread");             
-              cts.Dispose();
-
-             */
-
-            int heure = Int32.Parse(DateTime.Now.ToString("HH"));
-            int minute = Int32.Parse(DateTime.Now.ToString("mm"));
-            int seconde = Int32.Parse(DateTime.Now.ToString("ss"));
-            // Digital(heure, minute, seconde);
 
         }
 
-        static List<String> ReadFile()
+        static List<String> ReadFile(out String  modeleHorloge)
         {
             List<String> pause = new List<string>();
+            modeleHorloge = "";
             try
             {
                 //Créez une instance de StreamReader pour lire à partir d'un fichier
                 using (StreamReader sr = new StreamReader($"C:\\Users\\{System.Environment.UserName}\\Desktop\\horloge.txt"))
                 {
                     string line;
+                    modeleHorloge = sr.ReadLine();
                     // Lire les lignes du fichier jusqu'à la fin.
                     while ((line = sr.ReadLine()) != null)
                     {
@@ -80,6 +65,8 @@ namespace horloge_binaire
             Console.Beep(1188, 500); Console.Beep(1408, 250); Console.Beep(1760, 500); Console.Beep(1584, 250); Console.Beep(1408, 250); Console.Beep(1320, 750); Console.Beep(1056, 250);
             Console.Beep(1320, 500); Console.Beep(1188, 250); Console.Beep(1056, 250); Console.Beep(990, 500); Console.Beep(990, 250); Console.Beep(1056, 250);
             Console.Beep(1188, 500); Console.Beep(1320, 500); Console.Beep(1056, 500); Console.Beep(880, 500); Console.Beep(880, 500);
+
+
         }
 
 
@@ -152,7 +139,27 @@ namespace horloge_binaire
 
         static void Braille(int heure, int minute, int seconde)
         {
+            // █
+            String[,] number = new string[10, 9]
+             {
+                { "┌┐ ▄▄", "││ ██", "└┘ ▀▀", "▄▄ ▄▄", "██ ██", "▀▀ ▀▀", "┌┐ ┌┐", "││ ││", "└┘ └┘" },
+                { "▄▄ ┌┐", "██ ││", "▀▀ └┘", "┌┐ ┌┐", "││ ││", "└┘ └┘", "┌┐ ┌┐", "││ ││", "└┘ └┘" } ,
+                { "▄▄ ┌┐", "██ ││", "▀▀ └┘", "▄▄ ┌┐", "██ ││ ", "▀▀ └┘", "┌┐ ┌┐", "││ ││", "└┘ └┘"   },
+                { "▄▄ ▄▄", "██ ██", "▀▀ ▀▀", "┌┐ ┌┐", "││ ││", "└┘ └┘", "┌┐ ┌┐", "││ ││", "└┘ └┘" },
+                { "▄▄ ▄▄", "██ ██", "▀▀ ▀▀", "┌┐ ▄▄", "││ ██", "└┘ ▀▀", "┌┐ ┌┐", "││ ││", "└┘ └┘"  } ,
+                { "▄▄ ┌┐", "██ ││", "▀▀ └┘", "┌┐ ▄▄", "││ ██", "└┘ ▀▀", "┌┐ ┌┐", "││ ││", "└┘ └┘" } ,
+                { "▄▄ ▄▄", "██ ██", "▀▀ ▀▀", "▄▄ ┌┐", "██ ││", "▀▀ └┘", "┌┐ ┌┐", "││ ││", "└┘ └┘" },
+                { "▄▄ ▄▄", "██ ██", "▀▀ ▀▀", "▄▄ ▄▄", "██ ██", "▀▀ ▀▀", "┌┐ ┌┐", "││ ││", "└┘ └┘" } ,
+                { "▄▄ ┌┐", "██ ││", "▀▀ └┘", "▄▄ ▄▄", "██ ██", "▀▀ ▀▀", "┌┐ ┌┐", "││ ││", "└┘ └┘" } ,
+                { "┌┐ ▄▄", "││ ██", "└┘ ▀▀", "▄▄ ┌┐", "██ ││", "▀▀ └┘", "┌┐ ┌┐", "││ ││", "└┘ └┘" } 
 
+             };
+            string[] seperateur = new string[] { "┌┐ ┌┐", "││ ││", "└┘ └┘" , "▄▄ ▄▄", "██ ██", "▀▀ ▀▀", "┌┐ ┌┐", "││ ││", "└┘ └┘" };
+            AfficheBraille(number, heure, 25, 10);
+             AfficheSeparateur(seperateur, 40, 10);
+             AfficheBraille(number, minute, 48, 10);
+             AfficheSeparateur(seperateur, 63, 10);
+             AfficheBraille(number, seconde, 71, 10);
 
 
         }
@@ -174,15 +181,6 @@ namespace horloge_binaire
 
             };
 
-            /* for (int i = 0; i < number.GetLength(0); i++)
-             {
-                 for (int j = 0; j < number.GetLength(1); j++)
-                 {
-                     Console.Write(number.GetLength(1));
-                     Console.WriteLine(number[i,j]);
-                 }
-                 Console.WriteLine(" ");
-             }*/
 
             string[] seperateur = new string[] { "  ", "  _ ", " (_)", "    ", "  _ ", " (_)" };
             AfficheDigital(number, heure, 25, 10);
@@ -221,12 +219,29 @@ namespace horloge_binaire
             }
         }
 
-        static void Heure(List<String> pause)
+        static void AfficheBraille(String[,] number, int valeur, int left, int top)
         {
+            for (int j = 0; j < number.GetLength(1); j++)
+            {
+                Console.SetCursorPosition(left, top + j);
+                Console.WriteLine(number[(valeur / 10), j]);
+            }
+            for (int j = 0; j < number.GetLength(1); j++)
+            {
+                Console.SetCursorPosition(left + 7 , top + j);
+                Console.WriteLine(number[(valeur % 10), j]);
+            }
+        }
+
+        static void Heure(List<String> pause,String modeleHorloge)
+        {
+
+          
 
             Boolean flag = true;
             Console.CursorVisible = false;
-            while (true)
+
+            while (flag)
             {
 
 
@@ -242,25 +257,36 @@ namespace horloge_binaire
                         CancellationTokenSource cts = new CancellationTokenSource();
                         ThreadPool.QueueUserWorkItem(new WaitCallback(TetrisMusic), cts.Token);
                         // // Request cancellation.
-                        cts.Cancel();
+                        cts.Cancel(); // ??? sert a qu'elle que chose ?
                         // Console.WriteLine("Fin du thread");             
                         cts.Dispose();
                     }
                 }
 
-
-                if (flag)
+                
+                if (modeleHorloge.ToLower().Equals("digital"))
                 {
                     Digital(heure, minute, seconde);
                 }
-                else
+                else if (modeleHorloge.ToLower().Equals("binaire"))
                 {
                     Binaire(heure, minute, seconde); Console.SetCursorPosition(50, 5);
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.WriteLine(date);
+                } else if(modeleHorloge.ToLower().Equals("braille"))
+                {
+                    
+                    Braille(heure, minute, seconde); Console.SetCursorPosition(50, 5);
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.WriteLine(date);
+                }
+                else {
+                    flag = !flag;
+                    Console.WriteLine("ce modele d'horloge n'existe pas");
                 }
 
 
+               
 
                 //
 
